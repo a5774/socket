@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- take of router path -->
+    <script src="../vue.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        #box {
+            display: flex;
+            flex-flow: column wrap;
+        }
+
+        input {
+            height: 22px;
+            width: 220px;
+        }
+
+        input[type=button] {
+            width: 228px;
+            height: 30px;
+            /* cursor: not-allowed; */
+        }
+
+        #box span {
+            height: 30px;
+            line-height: 30px;
+            color: red;
+        }
+
+        .sendWin {
+            top: -70px;
+            height: 70px;
+            width: 25vw;
+            background-color: white;
+            position: absolute;
+            /* transform: translateY(70px) */
+            transition: top 1s;
+        }
+
+        .title {
+            /* text-align: left; */
+            padding: 8px 0px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id='box'>
+        <div class="title">singin:</div>
+        <div><input type="text" autocomplete v-model="username"></div>
+        <span>{{userMsg}}</span>
+        <div> <input type="password" v-model="password"></div>
+        <span>{{passMsg}}</span>
+        <input type="button" ref=button disabled @click.prevent="fetchSubmit" value="singin">
+        <a href="http://127.0.0.1:5050/main/login">has_Account?</a>{{jump}}
+    </div>
+    <script>
+        let vm = new Vue({
+            el: "#box",
+            data: {
+                username: "",
+                password: "",
+                userMsg: "",
+                passMsg: "",
+                jump: ""
+
+            },
+            methods: {
+
+                clearMsg() {
+                    console.log("dd");
+                },
+                checkInp(res) {
+                    if (res.password_or_user_is_empty) {
+
+                        this.userMsg = "password_or_user_is_empty"
+                    }
+                    if (res.user_exit) {
+                        this.userMsg = "user_exit"
+                    }
+                    this.username = null;
+                    this.password = null;
+                },
+                fetchSubmit() {
+                    let data = {
+                        "username": this.username.trim(),
+                        "password": this.password.trim()
+                    }
+                    fetch('http://127.0.0.1:5050/user', {
+                        method: "POST",
+                        headers: {
+                            // must params 
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(data)
+                    })
+                        .then(rsp => rsp.json())
+                        .then(res => {
+                            if (res.done) {
+                                let count = 3
+                                setInterval(() => {
+                                    if (!(count ^ 1)) {
+                                        location.href = './login'
+                                    }
+                                    this.jump = `to_login:${count--}...`
+                                }, 1000);
+                            } else {
+                                this.checkInp(res)
+                            }
+
+                        })
+                }
+            },
+            watch: {
+
+                password(data) {
+                    // data?null:this.passMsg = null
+                    if (data.length < 8) {
+                        this.passMsg = "must_be_over_8bit"
+                        vm.$refs.button.disabled = true
+                    } else {
+                        this.passMsg = ""
+                        vm.$refs.button.removeAttribute("disabled")
+                    }
+
+                },
+                username(data) {
+                    // data?null:this.userMsg = null
+                    if (!(data.length ^ 0)) {
+                        this.userMsg = "username_is_not_empty"
+                        vm.$refs.button.disabled = true
+                    } else {
+                        this.userMsg = ""
+                        // vm.$refs.button.removeAttribute("disabled")
+                    }
+
+                }
+
+            }
+        })
+    </script>
+</body>
+
+</html>

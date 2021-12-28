@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- <script src="../socket.io.js"></script> -->
+    <script src="/vue.js"></script>
+    <style>
+        body {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #chat>div {
+            display: flex;
+            justify-content: space-between;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="chat">
+        <div>
+            <input type="text" v-model="textsend" @blur="sockethandler" @keyup.enter=sockethandler>
+            <input type='button' value="send" @click=sockethandler>
+        </div>
+        <textarea cols="30" rows="10" v-model="textarea"></textarea>
+    </div>
+    <script>
+       /*  let socket = io();
+        let vm = new Vue({
+            el: '#chat',
+            data: {
+                textarea: "",
+                textsend: ""
+            },
+            methods: {
+                sockethandler() {
+                    socket.emit('chatClient',this.textsend)
+                }
+            },
+        })
+        socket.addEventListener('chatServer',msg=>{
+            vm.textarea += msg  
+        })
+         */
+    </script>
+</body>
+
+</html>
