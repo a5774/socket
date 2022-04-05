@@ -25,7 +25,7 @@ class LoginVerify {
         // verify authorization is exists 
         if (!cookie) {
             if(ctx.headers.referer) return ctx.redirect('back')
-            else return ctx.redirect('http://127.0.0.1:5050/main/index')  
+            else return ctx.redirect('http://laodongwang.xyz:5050/main/index')  
         }
         let token = cookie.split('=')[1]
         try {
@@ -37,7 +37,7 @@ class LoginVerify {
             // console.log( info );
         } catch (err) {
             // console.log( err);
-            ctx.redirect('http://127.0.0.1:5050/main/login')  
+            ctx.redirect('http://laodongwang.xyz:5050/main/login')  
         }
         await next();
     }

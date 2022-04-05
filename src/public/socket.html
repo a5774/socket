@@ -31,7 +31,7 @@
         }
 
         #chat::before {
-            content:"online:"attr(dataText);
+            content:"online:" attr(dataText);
             position: absolute;
             top: 20px;
             right: 10px;
@@ -43,17 +43,13 @@
     <div id="chat" ref='count' dataText="">
         {{tip}}
         <div>
-            <input type="text" placeholder="input_here" v-model="sendText" @blur=socketSend @keyup.enter=socketSend>
+            <input type="text" autofocus placeholder="input_here" v-model="sendText" @blur=socketSend @keyup.enter=socketSend>
             <input type='button' value="send" @click=socketSend>
         </div>
         <textarea ref="display" disabled cols="30" rows="10" v-model="textArea"></textarea>
     </div>
-    <!-- 同域共享cookie -->
-    <!-- <a href="http://127.0.0.1:5050/t">sss</a> -->
     <script>
         // 非跨域下任何方式请求默认发送cookie
-        // location.href 
-        // let uid = prompt("pls input username ")
         let socket = io();
         let vm = new Vue({
             el: '#chat',
@@ -100,7 +96,7 @@
                 vm.$refs.count.setAttribute('dataText',count)
             })
         })
-        fetch('http://127.0.0.1:5050/main/userflag').then(resp=>resp.json())
+        fetch('http://laodongwang.xyz:5050/main/userflag').then(resp=>resp.json())
         .then(res=>{
             if(res?.username){
                 sessionStorage.setItem("username",res.username)

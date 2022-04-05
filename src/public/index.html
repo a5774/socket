@@ -69,7 +69,7 @@
         <div> <input type="password" v-model="password"></div>
         <span>{{passMsg}}</span>
         <input type="button" ref=button disabled @click.prevent="fetchSubmit" value="singin">
-        <a href="http://127.0.0.1:5050/main/login">has_Account?</a>{{jump}}
+        <a href="http://laodongwang.xyz:5050/main/login">has_Account?</a>{{jump}}
     </div>
     <script>
         let vm = new Vue({
@@ -80,7 +80,6 @@
                 userMsg: "",
                 passMsg: "",
                 jump: ""
-
             },
             methods: {
 
@@ -103,7 +102,7 @@
                         "username": this.username.trim(),
                         "password": this.password.trim()
                     }
-                    fetch('http://127.0.0.1:5050/user', {
+                    fetch('http://laodongwang.xyz:5050/user', {
                         method: "POST",
                         headers: {
                             // must params 
